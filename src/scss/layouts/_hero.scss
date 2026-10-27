@@ -1,0 +1,109 @@
+.hero {
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+
+  .proficient {
+    display: inline-block;
+    background-color: var(--color-base);
+    color: var(--color-bg);
+    padding: 0 0.25rem;
+  }
+}
+
+.hero__title {
+  font-size: 2.25rem;
+}
+
+.scene {
+  position: relative;
+  padding: 3rem 0 6rem;
+}
+
+.sun,
+.moon {
+  height: 30vh;
+  width: 30vh;
+  min-height: 200px;
+  min-width: 200px;
+  background-color: #ffc062;
+  border-radius: 50%;
+  transform: translateX(-40%);
+  box-shadow: 0 0 20px rgba(#ffce84, 80%);
+}
+
+.moon {
+  display: none;
+  background-color: #fff;
+  box-shadow: 0 0 30px rgba(#fff, 80%);
+
+  svg {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.cloud {
+  position: absolute;
+  bottom: 12.5%;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.12));
+  animation-name: moveCloud;
+  animation-duration: 25s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+  transform: scale(0.75);
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.cloud-1 {
+  left: 10%;
+  bottom: 35%;
+  animation-duration: 10s;
+}
+
+.cloud-2 {
+  left: 40%;
+  animation-direction: alternate-reverse;
+}
+
+.cloud-3 {
+  left: 70%;
+  bottom: 25%;
+  animation-duration: 20s;
+}
+
+@keyframes moveCloud {
+  0% {
+    transform: translateX(-50%) scale(0.75);
+  }
+  100% {
+    transform: translateX(50%) scale(0.85);
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .hero {
+    text-align: center;
+  }
+
+  .sun,
+  .moon {
+    margin: auto;
+    transform: unset;
+  }
+}
+
+.theme--dark {
+  .sun {
+    display: none;
+  }
+
+  .moon {
+    display: block;
+  }
+}

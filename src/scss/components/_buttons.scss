@@ -1,0 +1,37 @@
+.btn {
+  &:focus,
+  &:focus-visible {
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-base);
+    outline-offset: 2px;
+  }
+}
+
+.btn-primary {
+  --bs-btn-color: var(--color-bg);
+  --bs-btn-bg: var(--color-base);
+  --bs-btn-border-color: var(--color-base);
+  --bs-btn-hover-color: var(--color-bg);
+  --bs-btn-hover-bg: var(--color-base);
+  --bs-btn-hover-border-color: var(--color-base);
+  --bs-btn-active-color: var(--color-bg);
+  --bs-btn-active-bg: var(--color-base);
+  --bs-btn-active-border-color: var(--color-base);
+  --bs-btn-disabled-color: var(--color-bg);
+  --bs-btn-disabled-bg: var(--color-base);
+  --bs-btn-disabled-border-color: var(--color-base);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--color-base);
+  --bs-btn-border-color: var(--color-base);
+  --bs-btn-hover-color: var(--color-bg);
+  --bs-btn-hover-bg: var(--color-base);
+  --bs-btn-hover-border-color: var(--color-base);
+  --bs-btn-active-color: var(--color-bg);
+  --bs-btn-active-bg: var(--color-base);
+  --bs-btn-active-border-color: var(--color-base);
+}
