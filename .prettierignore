@@ -1,0 +1,30 @@
+# Ignore Minified Files:
+**/*.min.js
+**/*.min.css
+
+# Ignore Sass build artifact:
+src/css/style.css
+
+# Ignore Markdown:
+*.md
+
+# Ignore Build or Output Files:
+dist/
+build/
+coverage/
+
+# Ignore Configuration Files:
+.prettierrc
+.editorconfig
+
+# Ignore Node Modules:
+node_modules/
+
+#Ignore Version Control Files:
+.gitignore
+.gitattributes
+
+#Ignore Test or Temporary Files:
+**/*.test.js
+logs/
+temp/
