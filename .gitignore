@@ -10,6 +10,9 @@ npm-debug.log*
 .idea/
 *.swp
 *.swo
+.ftpquota
+.htaccess
+error_log
 
 # Sass source map (regenerable build artifact)
 src/css/style.css.map
