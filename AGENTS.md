@@ -29,3 +29,4 @@ Static portfolio site. No framework, no bundler, no tests/CI. Prettier + ESLint 
 - JS lives inline in `index.html`, no separate JS files.
 - External CDN: Google Fonts (Fira Mono), FontAwesome 5.15.3.
 - Root static assets versioned: `favicon*`, `*.png`, `site.webmanifest`. `src/pdf/Ashwinder-Singh-Arora-Resume.pdf` tracked (not indexable: `robots.txt` disallows `/src/pdf/`).
+- CSS cache-bust: set `?v=` on the `src/css/style.css` link in `index.html` to a fresh unix epoch (`date +%s`) whenever recompiling CSS.
