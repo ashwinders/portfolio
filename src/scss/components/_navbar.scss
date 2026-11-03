@@ -125,7 +125,8 @@ button.navbar__link {
 }
 
 .ic--sun,
-.ic--moon {
+.ic--moon,
+.ic--system {
   display: none;
 }
 
@@ -134,7 +135,7 @@ button.navbar__link {
     display: none;
   }
 
-  .navbar__link .ic:not(.ic--sun):not(.ic--moon) {
+  .navbar__link .ic:not(.ic--sun):not(.ic--moon):not(.ic--system) {
     display: none;
   }
 }
@@ -147,6 +148,17 @@ button.navbar__link {
 
 .theme--light {
   .ic--sun {
+    display: inline-block;
+  }
+}
+
+html[data-theme="system"] {
+  .ic--sun,
+  .ic--moon {
+    display: none;
+  }
+
+  .ic--system {
     display: inline-block;
   }
 }

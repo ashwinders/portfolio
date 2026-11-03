@@ -157,14 +157,20 @@
       rel="stylesheet"
     />
     <script>
-      try {
+      (function () {
+        let theme = "system";
+        try {
+          theme = localStorage.theme || "system";
+        } catch (e) {}
+        if (theme !== "light" && theme !== "dark") theme = "system";
+        const dark =
+          theme === "dark" ||
+          (theme === "system" &&
+            matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = theme;
         document.documentElement.className =
-          "theme--" +
-          (localStorage.theme ||
-            (matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light"));
-      } catch (e) {}
+          "theme--" + (dark ? "dark" : "light");
+      })();
     </script>
     <link
       rel="stylesheet"
@@ -228,6 +234,14 @@
       >
         <path
           d="M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z"
+        />
+      </symbol>
+      <symbol
+        id="fa-desktop"
+        viewBox="0 0 576 512"
+      >
+        <path
+          d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"
         />
       </symbol>
       <symbol
@@ -352,8 +366,9 @@
                 <button
                   type="button"
                   class="navbar__link"
-                  aria-label="Toggle color theme"
-                  aria-pressed="false"
+                  id="theme-toggle"
+                  aria-label="Theme: system"
+                  title="Theme: system"
                 >
                   <svg
                     class="ic ic--sun"
@@ -365,7 +380,12 @@
                     aria-hidden="true"
                   >
                     <use href="#fa-moon" /></svg
-                  ><span class="toggle-theme"> Theme</span>
+                  ><svg
+                    class="ic ic--system"
+                    aria-hidden="true"
+                  >
+                    <use href="#fa-desktop" /></svg
+                  ><span class="toggle-theme">system</span>
                 </button>
               </li>
             </ul>
@@ -1055,33 +1075,46 @@
 
       const htmlEl = document.documentElement;
       const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      const themeToggle = document.querySelector(".navbar__link[aria-pressed]");
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeModes = ["light", "dark", "system"];
 
-      function setTheme(dark) {
-        htmlEl.classList.toggle("theme--dark", dark);
-        htmlEl.classList.toggle("theme--light", !dark);
-        themeToggle.setAttribute("aria-pressed", String(dark));
-      }
-
-      function toggleTheme() {
-        const dark = !htmlEl.classList.contains("theme--dark");
-        try {
-          localStorage.theme = dark ? "dark" : "light";
-        } catch (e) {}
-        setTheme(dark);
-      }
-
-      themeToggle.addEventListener("click", toggleTheme);
-
-      darkQuery.addEventListener("change", (e) => {
+      function storedTheme() {
         let stored;
         try {
           stored = localStorage.theme;
         } catch (e) {}
-        if (!stored) setTheme(e.matches);
+        return themeModes.includes(stored) ? stored : "system";
+      }
+
+      function applyTheme(mode) {
+        const dark =
+          mode === "dark" || (mode === "system" && darkQuery.matches);
+        htmlEl.classList.toggle("theme--dark", dark);
+        htmlEl.classList.toggle("theme--light", !dark);
+        htmlEl.dataset.theme = mode;
+        themeToggle.setAttribute("aria-label", "Theme: " + mode);
+        themeToggle.title = "Theme: " + mode;
+        themeToggle.querySelector(".toggle-theme").textContent = mode;
+      }
+
+      function setTheme(mode) {
+        try {
+          if (mode === "system") delete localStorage.theme;
+          else localStorage.theme = mode;
+        } catch (e) {}
+        applyTheme(mode);
+      }
+
+      themeToggle.addEventListener("click", () => {
+        const current = htmlEl.dataset.theme || storedTheme();
+        setTheme(themeModes[(themeModes.indexOf(current) + 1) % 3]);
       });
 
-      setTheme(htmlEl.classList.contains("theme--dark"));
+      darkQuery.addEventListener("change", () => {
+        if (storedTheme() === "system") applyTheme("system");
+      });
+
+      applyTheme(storedTheme());
 
       const contactForm = document.getElementById("contact-form");
       const contactStatus = document.getElementById("contact-form-status");
