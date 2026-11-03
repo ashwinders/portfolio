@@ -367,8 +367,8 @@
                   type="button"
                   class="navbar__link"
                   id="theme-toggle"
-                  aria-label="Theme: system"
-                  title="Theme: system"
+                  aria-label="Theme: System"
+                  title="Theme: System"
                 >
                   <svg
                     class="ic ic--sun"
@@ -384,8 +384,9 @@
                     class="ic ic--system"
                     aria-hidden="true"
                   >
-                    <use href="#fa-desktop" /></svg
-                  ><span class="toggle-theme">system</span>
+                    <use href="#fa-desktop" />
+                  </svg>
+                  <span class="toggle-theme">System</span>
                 </button>
               </li>
             </ul>
@@ -1092,9 +1093,10 @@
         htmlEl.classList.toggle("theme--dark", dark);
         htmlEl.classList.toggle("theme--light", !dark);
         htmlEl.dataset.theme = mode;
-        themeToggle.setAttribute("aria-label", "Theme: " + mode);
-        themeToggle.title = "Theme: " + mode;
-        themeToggle.querySelector(".toggle-theme").textContent = mode;
+        const label = mode[0].toUpperCase() + mode.slice(1);
+        themeToggle.setAttribute("aria-label", "Theme: " + label);
+        themeToggle.title = "Theme: " + label;
+        themeToggle.querySelector(".toggle-theme").textContent = label;
       }
 
       function setTheme(mode) {
