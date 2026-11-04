@@ -1,9 +1,9 @@
 # AGENTS.md
 
-Static portfolio site. No framework, no bundler, no tests/CI. Prettier + ESLint + Stylelint configs present; only Prettier is wired to npm scripts.
+Static portfolio site for `ashwinder.me`. No framework, no bundler, no tests. Prettier + ESLint + Stylelint configs present; only Prettier is wired to npm scripts.
 
 ## Entrypoints
-- `index.html` — markup + inline `<style>` preloader + inline `<script>` (theme, navbar, scroll)
+- `index.html` — markup, inline SVG icon sprite, inline head theme boot script, inline tail JS (navbar dialog, scroll state, theme toggle, contact form)
 - `src/scss/style.scss` — sole SCSS entry → compiles to `src/css/style.css`
 - `src/css/style.css` — committed build artifact, linked from HTML (source map disabled)
 
@@ -13,7 +13,12 @@ Static portfolio site. No framework, no bundler, no tests/CI. Prettier + ESLint 
 - `npm run format` — Prettier write (`src/css/style.css` and `*.md` ignored)
 - `npm run format:check` — Prettier check
 - No dev server. Open `index.html` directly or use any static server.
+
+## Deployment
 - Canonical site: `ashwinder.me`. GitHub Pages (`ashwinders.github.io`) retired.
+- `.github/workflows/deploy.yml` SSH-deploys on push to `main` (or manual dispatch). Server runs `git fetch --all --prune`, `git checkout main`, `git reset --hard origin/main`.
+- Required secrets: `SSH_HOST`, `SSH_USERNAME`, `SSH_PORT`, `SSH_PRIVATE_KEY`, `DEPLOY_PATH`.
+- No build step in CI; committed `src/css/style.css` is what ships.
 
 ## SCSS structure
 - `src/scss/abstract/` — variables, theme, common
@@ -22,11 +27,26 @@ Static portfolio site. No framework, no bundler, no tests/CI. Prettier + ESLint 
 - Partial Bootstrap 5.3 import only: functions, variables, variables-dark, maps, mixins, root, reboot, type, containers, grid, buttons, helpers, utilities, utilities/api. Don't import full bootstrap.
 - After SCSS change: recompile + commit `src/css/style.css`.
 
+## Theme
+- Three-way toggle: light / dark / system. Stored in `localStorage.theme`; system mode removes the key.
+- Inline head script sets `data-theme` and `theme--dark`/`theme--light` before paint to avoid flash.
+- Tail script syncs the toggle label and reacts to `prefers-color-scheme` changes when in system mode.
+
+## Contact form
+- Web3Forms (`https://api.web3forms.com/submit`) + hCaptcha.
+- Public Web3Forms access key is embedded in `index.html`; domain-locked in the Web3Forms dashboard.
+- Client script loaded from `https://web3forms.com/client/script.js`.
+
+## SEO / PWA
+- Canonical `https://ashwinder.me/`, JSON-LD Person, Open Graph + Twitter tags.
+- `robots.txt` allows all except `/src/pdf/`; `sitemap.xml` lists only the homepage.
+- `site.webmanifest` handles install icons and theme colors.
+
 ## Gotchas
 - `node_modules/` ignored. DevDeps: `bootstrap@^5.3.8`, `sass@^1.107.1`, `prettier@^3.9.10`.
-- No `README`, no CI workflows, no `opencode.json`.
-- Lint configs exist (`.eslintrc.js`, `.stylelintrc.json` + ignore files) but no npm scripts call them.
+- `README.md` exists. No `opencode.json`.
+- Lint configs exist (`.eslintrc.js`, `.stylelintrc.json` + ignore files) but ESLint/Stylelint are not installed and no npm scripts call them.
 - JS lives inline in `index.html`, no separate JS files.
-- External CDN: Google Fonts (Fira Mono), FontAwesome 5.15.3.
-- Root static assets versioned: `favicon*`, `*.png`, `site.webmanifest`. `src/pdf/Ashwinder-Singh-Arora-Resume.pdf` tracked (not indexable: `robots.txt` disallows `/src/pdf/`).
+- External resources: Google Fonts (Bricolage Grotesque, Google Sans Code), Web3Forms client script. Icons are an inline SVG sprite; no FontAwesome CDN.
+- Root static assets versioned: `favicon*`, `*.png`, `site.webmanifest`, plus SEO files `robots.txt` and `sitemap.xml`. `src/pdf/Ashwinder-Singh-Arora-Resume.pdf` tracked (not indexable: `robots.txt` disallows `/src/pdf/`).
 - CSS cache-bust: set `?v=` on the `src/css/style.css` link in `index.html` to a fresh unix epoch (`date +%s`) whenever recompiling CSS.
