@@ -15,10 +15,9 @@ Static portfolio site for `ashwinder.me`. No framework, no bundler, no tests. Pr
 - No dev server. Open `index.html` directly or use any static server.
 
 ## Deployment
-- Canonical site: `ashwinder.me`. GitHub Pages (`ashwinders.github.io`) retired.
-- `.github/workflows/deploy.yml` SSH-deploys on push to `main` (or manual dispatch). Server runs `git fetch --all --prune`, `git checkout main`, `git reset --hard origin/main`.
-- Required secrets: `SSH_HOST`, `SSH_USERNAME`, `SSH_PORT`, `SSH_PRIVATE_KEY`, `DEPLOY_PATH`.
-- No build step in CI; committed `src/css/style.css` is what ships.
+- Canonical site: `ashwinder.me` via Cloudflare Pages (GitHub-connected). GitHub Pages (`ashwinders.github.io`) retired.
+- Auto-deploys on push to `main`; preview deploy per PR. No CI config or secrets in repo.
+- No build step; committed `src/css/style.css` is what ships.
 
 ## SCSS structure
 - `src/scss/abstract/` — variables, theme, common
@@ -39,7 +38,7 @@ Static portfolio site for `ashwinder.me`. No framework, no bundler, no tests. Pr
 
 ## SEO / PWA
 - Canonical `https://ashwinder.me/`, JSON-LD Person, Open Graph + Twitter tags.
-- `robots.txt` allows all except `/src/pdf/`; `sitemap.xml` lists only the homepage.
+- `robots.txt` allows all; `sitemap.xml` lists only the homepage.
 - `site.webmanifest` handles install icons and theme colors.
 
 ## Gotchas
@@ -48,5 +47,5 @@ Static portfolio site for `ashwinder.me`. No framework, no bundler, no tests. Pr
 - Lint configs exist (`.eslintrc.js`, `.stylelintrc.json` + ignore files) but ESLint/Stylelint are not installed and no npm scripts call them.
 - JS lives inline in `index.html`, no separate JS files.
 - External resources: Google Fonts (Bricolage Grotesque, Google Sans Code), Web3Forms client script. Icons are an inline SVG sprite; no FontAwesome CDN.
-- Root static assets versioned: `favicon*`, `*.png`, `site.webmanifest`, plus SEO files `robots.txt` and `sitemap.xml`. `src/pdf/Ashwinder-Singh-Arora-Resume.pdf` tracked (not indexable: `robots.txt` disallows `/src/pdf/`).
+- Root static assets versioned: `favicon*`, `*.png`, `site.webmanifest`, plus SEO files `robots.txt` and `sitemap.xml`.
 - CSS cache-bust: set `?v=` on the `src/css/style.css` link in `index.html` to a fresh unix epoch (`date +%s`) whenever recompiling CSS.

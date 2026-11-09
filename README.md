@@ -29,7 +29,6 @@ Single-page static portfolio. No framework, no bundler.
 - `src/scss/` — `abstract/` (variables, theme, common),
   `components/` (navbar, buttons), `layouts/` (hero, experience)
 - `src/css/style.css` — committed build artifact (recompile after SCSS edits)
-- `src/pdf/` — resume (blocked from crawlers in `robots.txt`, contains PII)
 - `robots.txt`, `sitemap.xml`, `site.webmanifest` — SEO/PWA
 
 ## Notes
